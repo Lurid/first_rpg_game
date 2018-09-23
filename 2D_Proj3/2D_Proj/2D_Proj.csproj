@@ -289,8 +289,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Images\InvSize.cs" />
-    <Compile Include="Assets\Import\DynamicTextAdjuster.cs" />
-    <Compile Include="Assets\Import\Text.cs" />
     <Compile Include="Assets\Ocias\PixelArtCamera\Example\CameraPan.cs" />
     <Compile Include="Assets\Ocias\PixelArtCamera\Example\RandomRotate.cs" />
     <Compile Include="Assets\Ocias\PixelArtCamera\Example\SixtyFPS.cs" />
@@ -302,6 +300,7 @@
     <Compile Include="Assets\Scripts\AI_UI\PlayerController.cs" />
     <Compile Include="Assets\Scripts\AI_UI\SpellsScript.cs" />
     <Compile Include="Assets\Scripts\Center.cs" />
+    <Compile Include="Assets\Scripts\FontFix.cs" />
     <Compile Include="Assets\Scripts\Graphic\AttactAnim.cs" />
     <Compile Include="Assets\Scripts\Graphic\LookAtCamera.cs" />
     <Compile Include="Assets\Scripts\Graphic\PassiveRotate.cs" />
