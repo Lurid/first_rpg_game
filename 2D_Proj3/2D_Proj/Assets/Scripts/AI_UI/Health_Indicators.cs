@@ -2,45 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum cloth_type
-{
-    Head, Body, Leg, Foot
-}
-
-public class Clothes : Item
-{
-
-
-    public Clothes(int id, string name, cloth_type ty, Vector3 m_r, Vector3 p_r)
-    {
-        ID = id;
-        Name = name;
-        itemType = ItemType.Clothes;
-        Magic_Resist = m_r;
-        Physical_Resist = p_r;
-        ClothType = ty;
-    }
-
-    public Clothes(cloth_type ty)
-    {
-        ClothType = ty;
-    }
-
-    [Range(0f, 100f)] public float condition = 100;
-
-
-
-    public cloth_type ClothType;
-
-    public Vector3 Magic_Resist = Vector3.zero;
-    //fire_r, ice_r, electric_r
-
-    public Vector3 Physical_Resist = Vector3.zero;
-    //slash_r, crash_r, prick_r
-
-    [Range(0f, 100f)] public float dodge_chanse = 0;
-}
-
 public class Health_Indicators : MonoBehaviour {
     
     public Clothes[] Cloth = new Clothes[4];
@@ -65,10 +26,10 @@ public class Health_Indicators : MonoBehaviour {
     // Use this for initialization
     void Start () {
         //Indicators = Max_Indicator;
-        Cloth[0] = new Clothes(cloth_type.Head);
-        Cloth[1] = new Clothes(0, "Защитный плащ(Огонь)",cloth_type.Body, new Vector3(40, 0, 0), Vector3.zero);
-        Cloth[2] = new Clothes(cloth_type.Leg);
-        Cloth[3] = new Clothes(cloth_type.Foot);
+        Cloth[0] = new Clothes(armor_Type.Head);
+        Cloth[1] = new Clothes(0, "Защитный плащ(Огонь)", armor_Type.Body, new Vector3(40, 0, 0), Vector3.zero);
+        Cloth[2] = new Clothes(armor_Type.left_Foot);
+        Cloth[3] = new Clothes(armor_Type.right_Hand);
 
 
     }

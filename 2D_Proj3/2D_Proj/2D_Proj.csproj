@@ -288,7 +288,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Images\InvSize.cs" />
     <Compile Include="Assets\Ocias\PixelArtCamera\Example\CameraPan.cs" />
     <Compile Include="Assets\Ocias\PixelArtCamera\Example\RandomRotate.cs" />
     <Compile Include="Assets\Ocias\PixelArtCamera\Example\SixtyFPS.cs" />
@@ -298,13 +297,17 @@
     <Compile Include="Assets\Scripts\AI_UI\Health_Indicators.cs" />
     <Compile Include="Assets\Scripts\AI_UI\NPC.cs" />
     <Compile Include="Assets\Scripts\AI_UI\PlayerController.cs" />
-    <Compile Include="Assets\Scripts\AI_UI\SpellsScript.cs" />
-    <Compile Include="Assets\Scripts\Center.cs" />
-    <Compile Include="Assets\Scripts\FontFix.cs" />
     <Compile Include="Assets\Scripts\Graphic\AttactAnim.cs" />
     <Compile Include="Assets\Scripts\Graphic\LookAtCamera.cs" />
     <Compile Include="Assets\Scripts\Graphic\PassiveRotate.cs" />
-    <Compile Include="Assets\Scripts\Scr_1.cs" />
+    <Compile Include="Assets\Scripts\Items.cs" />
+    <Compile Include="Assets\Scripts\Other\Center.cs" />
+    <Compile Include="Assets\Scripts\Other\FontFix.cs" />
+    <Compile Include="Assets\Scripts\Other\Inventory.cs" />
+    <Compile Include="Assets\Scripts\Other\InvSize.cs" />
+    <Compile Include="Assets\Scripts\Other\Scr_1.cs" />
+    <Compile Include="Assets\Scripts\Spells.cs" />
+    <Compile Include="Assets\Scripts\Weapons.cs" />
     <Compile Include="Assets\Scripts\World\GrassSpawner.cs" />
   </ItemGroup>
   <ItemGroup>
