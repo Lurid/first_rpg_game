@@ -304,6 +304,7 @@
     <Compile Include="Assets\Scripts\Graphic\AttactAnim.cs" />
     <Compile Include="Assets\Scripts\Graphic\LookAtCamera.cs" />
     <Compile Include="Assets\Scripts\Graphic\PassiveRotate.cs" />
+    <Compile Include="Assets\Scripts\NextPerks.cs" />
     <Compile Include="Assets\Scripts\Scr_1.cs" />
     <Compile Include="Assets\Scripts\World\GrassSpawner.cs" />
   </ItemGroup>
