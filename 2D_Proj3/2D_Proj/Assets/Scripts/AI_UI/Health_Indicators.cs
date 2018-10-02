@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Health_Indicators : MonoBehaviour {
     
-    public Clothes[] Cloth = new Clothes[4];
+    public Armor[] Cloth = new Armor[4];
     public Vector3 _Indicators_EE = new Vector3(100, 100, 100);
     public Vector3 Indicators
     {
@@ -26,10 +26,10 @@ public class Health_Indicators : MonoBehaviour {
     // Use this for initialization
     void Start () {
         //Indicators = Max_Indicator;
-        Cloth[0] = new Clothes(armor_Type.Head);
-        Cloth[1] = new Clothes(0, "Защитный плащ(Огонь)", armor_Type.Body, new Vector3(40, 0, 0), Vector3.zero);
-        Cloth[2] = new Clothes(armor_Type.left_Foot);
-        Cloth[3] = new Clothes(armor_Type.right_Hand);
+        Cloth[0] = new Armor(armor_Type.Head);
+        Cloth[1] = new Armor(0, "Защитный плащ(Огонь)", armor_Type.Body, new Vector3(40, 0, 0), Vector3.zero);
+        Cloth[2] = new Armor(armor_Type.left_Foot);
+        Cloth[3] = new Armor(armor_Type.right_Foot);
 
 
     }
@@ -47,7 +47,7 @@ public class Health_Indicators : MonoBehaviour {
         Debug.Log("DMG = " + FullDmg);
         Indicators -= FullDmg;
         //UpdateIndicators();
-        return Mul(FullDmg, Div(m_s.Absorb, new Vector3(100, 100, 100)));
+        return Mul(FullDmg, new Vector3(100, 100, 100)); //Div(m_s.Absorb, )
     }
 
     public static Vector3 Mul(Vector3 one, Vector3 two)

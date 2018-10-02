@@ -12,11 +12,9 @@ public class Item
     public item_Type itemType;
 }
 
-public class Clothes : Item
+public class Armor : Item
 {
-
-
-    public Clothes(int id, string name, armor_Type ty, Vector3 m_r, Vector3 p_r)
+    public Armor(int id, string name, armor_Type ty, Vector3 m_r, Vector3 p_r)
     {
         ID = id;
         Name = name;
@@ -26,15 +24,13 @@ public class Clothes : Item
         ArmorType = ty;
     }
 
-    public Clothes(armor_Type ty)
+    public Armor(armor_Type ty)
     {
         ArmorType = ty;
     }
 
     [Range(0f, 100f)] public float condition = 100;
-
-
-
+    
     public armor_Type ArmorType;
 
     public Vector3 Magic_Resist = Vector3.zero;
@@ -48,7 +44,7 @@ public class Clothes : Item
 
 public class Items : MonoBehaviour {
 
-    public class Armor : Item
+    /*public class Armor : Item
     {
         public armor_Type Armor_Type;
         [Range(0f, 100f)] public float condition = 100;
@@ -62,7 +58,7 @@ public class Items : MonoBehaviour {
         [Range(-100f, 100f)] public float dodge_chanse = 0;
         public MagicSpell first_Spell;
         public MagicSpell second_Spell;
-    }
+    }*/
 
     // Use this for initialization
     void Start () {
