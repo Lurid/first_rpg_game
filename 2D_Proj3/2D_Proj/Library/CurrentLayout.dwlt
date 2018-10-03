@@ -20,7 +20,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 2}
-  m_MinSize: {x: 950, y: 300}
+  m_MinSize: {x: 950, y: 542}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &2
 MonoBehaviour:
@@ -110,7 +110,7 @@ MonoBehaviour:
   m_MinSize: {x: 713, y: 492}
   m_MaxSize: {x: 18008, y: 14042}
   vertical: 0
-  controlID: 9
+  controlID: 90
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -134,7 +134,7 @@ MonoBehaviour:
   m_MinSize: {x: 232, y: 492}
   m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 32
+  controlID: 10
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -155,12 +155,12 @@ MonoBehaviour:
     height: 672
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
-  m_ActualView: {fileID: 12}
+  m_ActualView: {fileID: 11}
   m_Panes:
   - {fileID: 12}
   - {fileID: 11}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -284,7 +284,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 0
+    m_EnableMouseInput: 1
     m_EnableSliderZoom: 0
     m_UniformScale: 1
     m_UpDirection: 1
@@ -342,14 +342,14 @@ MonoBehaviour:
     height: 651
   m_PersistentViewDataDictionary: {fileID: 0}
   m_SceneLighting: 1
-  lastFramingTime: 8619.48546232823
+  lastFramingTime: 5038.776533110251
   m_2DMode: 1
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 393, y: 499, z: 0}
+    m_Target: {x: 306.05896, y: 453.44012, z: -2.875}
     speed: 2
-    m_Value: {x: 393, y: 499, z: 0}
+    m_Value: {x: 306.05896, y: 453.44012, z: -2.875}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -377,15 +377,15 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 154.00786
+    m_Target: 442.92874
     speed: 2
-    m_Value: 154.00786
+    m_Value: 442.92874
   m_Ortho:
     m_Target: 1
     speed: 2
     m_Value: 1
   m_ShowGlobalGrid: 1
-  m_LastSceneViewRotation: {x: 0.08717229, y: -0.89959055, z: 0.21045254, w: 0.3726226}
+  m_LastSceneViewRotation: {x: -0.08717229, y: 0.89959055, z: -0.21045254, w: -0.3726226}
   m_LastSceneViewOrtho: 0
   m_ReplacementShader: {fileID: 0}
   m_ReplacementString: 
@@ -430,19 +430,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Prefabs
+    - Assets/Ocias/PixelArtCamera/Example/Textures
   m_ViewMode: 1
   m_StartGridSize: 46
   m_LastFolders:
-  - Assets/Prefabs
+  - Assets/Ocias/PixelArtCamera/Example/Textures
   m_LastFoldersGridSize: 46
   m_LastProjectPath: F:\GitHub\test\first_rpg_game\2D_Proj3\2D_Proj
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 167}
-    m_SelectedIDs: 122a0000
-    m_LastClickedID: 10770
-    m_ExpandedIDs: 000000007a290000d0290000122a0000862b0000f8350000fa35000000ca9a3bffffff7f
+    m_SelectedIDs: 04290000
+    m_LastClickedID: 10500
+    m_ExpandedIDs: 00000000cc2800002629000068290000bc290000262a0000da2a00005e2b0000de350000e035000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -470,7 +470,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000007a290000d0290000122a0000862b0000f8350000fa350000
+    m_ExpandedIDs: 00000000cc2800002629000068290000da2a0000de350000e0350000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -549,7 +549,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 764
-    width: 1254
+    width: 1437
     height: 254
   m_PersistentViewDataDictionary: {fileID: 0}
 --- !u!114 &15
@@ -581,20 +581,20 @@ MonoBehaviour:
   m_PersistentViewDataDictionary: {fileID: 0}
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: d8f5ffff
-    m_LastClickedID: -2600
-    m_ExpandedIDs: 4a5dfcff1265ffffdaf2ffff8cf4ffffb2f4ffffd8f5fffff0f9ffff00000000642d0000302e0000102f0000c8320000
+    m_SelectedIDs: 90320000
+    m_LastClickedID: 12944
+    m_ExpandedIDs: 84f7ffff9efbffff00000000de2c0000b62d0000e22d00008a2e0000a22e000068320000c8320000b6330000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: PerkCell
-      m_OriginalName: PerkCell
+      m_Name: PerkPointsText
+      m_OriginalName: PerkPointsText
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: -865960
+      m_UserData: -167646
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
       m_OriginalEventType: 0
