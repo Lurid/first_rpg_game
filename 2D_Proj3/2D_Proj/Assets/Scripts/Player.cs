@@ -12,6 +12,7 @@ public enum SkillType
 }
 
 public class Player : MonoBehaviour {
+    public bool isPlayer = false;
     public ushort FreePerkPoints;
 
     public uint Level = 1;
@@ -24,9 +25,9 @@ public class Player : MonoBehaviour {
     public SkillTree SmithingTree; public SkillTree HeavyArmorTree; public SkillTree BlockTree; public SkillTree TwohandedTree; public SkillTree OnehandedTree; public SkillTree MarksmanTree;
     public SkillTree LightArmorTree; public SkillTree SneakTree; public SkillTree LockpickingTree; public SkillTree PickpocketTree; public SkillTree SpeechcraftTree; public SkillTree AlchemyTree;
     
-    public VisualPerk IllusionVisual; public VisualPerk ConjurationVisual; public VisualPerk DestructionVisual; public VisualPerk RestorationVisual; public VisualPerk AlterationVisual; public VisualPerk EnchantingVisual;
-    public VisualPerk SmithingVisual; public VisualPerk HeavyArmorVisual; public VisualPerk BlockVisual; public VisualPerk TwohandedVisual; public VisualPerk OnehandedVisual; public VisualPerk MarksmanVisual;
-    public VisualPerk LightArmorVisual; public VisualPerk SneakVisual; public VisualPerk LockpickingVisual; public VisualPerk PickpocketVisual; public VisualPerk SpeechcraftVisual; public VisualPerk AlchemyVisual;
+    public UpgradeTree IllusionVisual; public UpgradeTree ConjurationVisual; public UpgradeTree DestructionVisual; public UpgradeTree RestorationVisual; public UpgradeTree AlterationVisual; public UpgradeTree EnchantingVisual;
+    public UpgradeTree SmithingVisual; public UpgradeTree HeavyArmorVisual; public UpgradeTree BlockVisual; public UpgradeTree TwohandedVisual; public UpgradeTree OnehandedVisual; public UpgradeTree MarksmanVisual;
+    public UpgradeTree LightArmorVisual; public UpgradeTree SneakVisual; public UpgradeTree LockpickingVisual; public UpgradeTree PickpocketVisual; public UpgradeTree SpeechcraftVisual; public UpgradeTree AlchemyVisual;
 
     public SkillTree ActiveSkillTree;
 
@@ -37,13 +38,17 @@ public class Player : MonoBehaviour {
     public Text LeftTreeInfo;
     public Text MessageTreeUpgradeText;
 
-    void Start () {
+    private void Awake()
+    {
         IllusionTree = new IllusionTree(this);
+    }
 
-        if (GetComponent<Gamer>() != null)
+    void Start () {
+
+        /*if (GetComponent<Gamer>() != null)
         {
-            IllusionTree.SetVisualScript(GetVisual(IllusionTree.SkillType));
-        }
+            IllusionTree.SetVisualScript(0, GetVisual(IllusionTree.SkillType));
+        }*/
         FreePerkPoints = 20;
         ActiveSkillTree = IllusionTree;
         UpgradeSkillPointsText();
@@ -75,7 +80,13 @@ public class Player : MonoBehaviour {
     {
         SpellDescriptionTreeUpgradeText.text = p.Description;
     }
-    
+
+    public void UpgradeDescriptionText(GroupPerkClass p)
+    {
+        Debug.Log(p);
+        SpellDescriptionTreeUpgradeText.text = (UpgradeTree.GetObject(p.ids[p.UpgradeLevel]).Object as Perk).Description;
+    }
+
 
     public SkillTree GetTree(SkillType sT)
     {
@@ -104,9 +115,9 @@ public class Player : MonoBehaviour {
         return result;
     }
 
-    public VisualPerk GetVisual(SkillType ST)
+    public UpgradeTree GetVisual(SkillType ST)
     {
-        VisualPerk result = null;
+        UpgradeTree result = null;
         switch (ST)
         {
             case SkillType.Illusion: result = IllusionVisual; break;

@@ -1,4 +1,4 @@
 
 *.csproj
 *.cache
-*/metadata*
+2D_Proj3/2D_Proj/Library/metadata/*

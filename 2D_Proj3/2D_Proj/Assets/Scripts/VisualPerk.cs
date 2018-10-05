@@ -22,7 +22,13 @@ public class VisualPerk : MonoBehaviour {
             name.text = ThisPerk.name;
             tree = transform.GetComponentInParent<UpgradeTree>();
         }*/
-        player = GetComponentInParent<Player>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        if (code != 0)
+        {
+            Debug.Log((UpgradeTree.GetObject(code).Object as Perk).name);
+            Debug.Log(player.GetTree((UpgradeTree.GetObject(code).Object as Perk).skillType)); //.GroupPerks[0].ids[0]
+            ThisPerk = Array.Find(player.GetTree((UpgradeTree.GetObject(code).Object as Perk).skillType).GroupPerks, x => { uint k = Array.Find(x.ids, y => y == code); if (k != 0) Debug.Log("!@!"); return k != 0; } );
+        }
         //ThisPerk = 
     }
 	
@@ -38,13 +44,13 @@ public class VisualPerk : MonoBehaviour {
 
     public void Click()
     {
-        /*if ((Time.time - LastClickTime) < 0.5f)
+        if ((Time.time - LastClickTime) < 0.5f)
         {
-            if (code != 0) ThisPerk.TryLearn();
+            if (code != 0) ThisPerk.TryLearn(false);
         } else
         {
             player.UpgradeDescriptionText(ThisPerk);
-        }*/
+        }
         LastClickTime = Time.time;
     }
 
