@@ -41,27 +41,7 @@ public class Player : MonoBehaviour {
 	public void TryLernPerk (pperk p) {
         //Debug.Log(p.Name + " clicked");
         //UpgradeTree ActiveTree = p.parent;
-        if (!p.CanBeLearned) //&& (FreePerkPoints > 0) && (Illusion > p.NeededLevel) && (!p.learned)
-        {
-            ShowMessage("Необходимо выучить предыдущие навыки.");
-        }
-        else if (GetSkillValue(p.parent.SkillType) < p.perkUpgradeLevels[p.UpgradeLevel].NeededLevel)
-        {
-            ShowMessage("У вас недостаточный уровень навыка " + ActiveSkillTree.name + "."); //ActiveSkillTree
-        }
-        else if (FreePerkPoints < 1)
-        {
-            ShowMessage("Недостаточно очков навыков.");
-        }
-        else if (p.learned)
-        {
-            ShowMessage("Навык уже выучен.");
-        } else 
-        {
-            FreePerkPoints--;
-            UpgradePerkPointsText();
-            p.parent.LearnThisPerk(p.id);
-        }
+
     }
     
     public void ShowMessage(string message)
@@ -79,9 +59,9 @@ public class Player : MonoBehaviour {
         PerkPointsText.text = "Свободных очков способностей: " + FreePerkPoints;
     }
 
-    public void UpgradeDescriptionText(string desc)
+    public void UpgradeDescriptionText(pperk p)
     {
-        SpellDescriptionTreeUpgradeText.text = desc;
+        SpellDescriptionTreeUpgradeText.text = p.Description;
     }
     
 

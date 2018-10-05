@@ -4,7 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class perkUpgrade
+
+
+public class obj
+{
+    public uint id;
+    public object Object;
+
+    public obj (uint _id, object _Object)
+    {
+        id = _id;
+        Object = _Object;
+    }
+}
+
+    public class perkUpgrade
 {
     public byte NeededLevel;
     public Action<object> action;
@@ -24,32 +38,49 @@ public class perkUpgrade
     }
 }
 
+public class VisiblePerkField
+{
+    public byte UpgradeLevel = 0;
+    public bool CanBeLearned;
+    uint[] nextids;
+
+    /*else if (!CanBeLearned)
+        {
+            parent.parent.ShowMessage("Необходимо выучить предыдущие навыки.");
+        }*/
+}
+
 [Serializable]
 public class pperk
 {
-    public uint id;
     public string name;
     public string Description;
     public bool learned;
-    public bool CanBeLearned;
-    public byte UpgradeLevel = 0;
-    uint[] nextids;
-    public perkUpgrade[] perkUpgradeLevels;
+    public perkUpgrade perkUpgradeLevel;
     public skilltree parent;
 
-    public pperk(uint _id, string _name, string _Description, uint[] _nextids, perkUpgrade[] _perkUpgradeLevels)
+    public pperk(string _name, string _Description, uint[] _nextids, perkUpgrade _perkUpgradeLevel)
     {
-        id = _id;
         name = _name;
         Description = _Description;
-        nextids = _nextids;
-        Array.ForEach(_perkUpgradeLevels, x => { x.parent = parent; });
-        perkUpgradeLevels = _perkUpgradeLevels;
+        _perkUpgradeLevel.parent = parent;
+        perkUpgradeLevel = _perkUpgradeLevel;
     }
 
     public void TryLearn()
     {
-
+        if (learned)
+        {
+            parent.parent.ShowMessage("Навык уже выучен.");
+        }
+        else if ((parent.parent.Illusion) < perkUpgradeLevel.NeededLevel)
+        {
+            parent.parent.ShowMessage("У вас недостаточный уровень навыка " + parent.name + "."); //ActiveSkillTree
+        }
+        else
+        {
+            parent.LearnPerk(id);
+        }
     }
 }
 
@@ -58,6 +89,9 @@ public class skilltree
     public string name;
     public skillType SkillType;
     public pperk[] perks;
+    public Player parent;
+
+    public skilltree() { }
 
     public skilltree(string _name, skillType _SkillType, pperk[] _perks)
     {
@@ -66,7 +100,30 @@ public class skilltree
         perks = _perks;
     }
 
-    public skilltree(){ }
+    public void LearnPerk(uint u)
+    {
+        if (parent.FreePerkPoints < 1)
+        {
+            parent.ShowMessage("Недостаточно очков навыков.");
+        }
+        else
+        {
+
+            pperk p = Array.Find(perks, x => x.id == u);
+            if (p != null)
+            {
+
+                /*if (p.UpgradeLevel < p.perkUpgradeLevels.Length)
+                {
+                    Array.ForEach(perks, x => { x.CanBeLearned = true; });
+                    p.perkUpgradeLevels[p.UpgradeLevel].action(this);
+                    parent.FreePerkPoints--;
+                    parent.UpgradePerkPointsText();
+                    p.UpgradeLevel++;
+                }*/
+            }
+        }
+    }
 }
 
 public class IllusionTree : skilltree
@@ -80,19 +137,7 @@ public class IllusionTree : skilltree
 
     private Action upgrade;
 
-    public void LearnPerk(uint u)
-    {
-        pperk p = Array.Find(perks, x => x.id == u);
-        if (p != null)
-        {
-            if (p.UpgradeLevel < p.perkUpgradeLevels.Length)
-            {
-                p.perkUpgradeLevels[p.UpgradeLevel].action(this); //upgrade = 
-                                                                  //upgrade.Invoke();
-                p.UpgradeLevel++;
-            }
-        }
-    }
+
 
     public IllusionTree(string _name, skillType _SkillType, pperk[] _perks)
     {
@@ -107,8 +152,13 @@ public class UpgradeTree : MonoBehaviour {
     public skillType SkillType;
     public Player player;
 
+    public static obj[] AllObject = new obj[] {
+        new obj(0x000F2CA9, new pperk("Новичок школы иллюзии", "Заклинания школы иллюзии уровня новичка расходуют вдвое меньше магии.", new uint[] { 0x000153D0, 0x000C44C3, 0x000581E2 },  new perkUpgrade(0, delegate (object it) { (it as IllusionTree).Novice = true; Debug.Log("spell novice illusion learned");/**/})))
+    };
+
     public IllusionTree Illusion = new IllusionTree("Иллюзия", (skillType)0, new pperk[] {
-        new pperk(0x000F2CA9, "Новичок школы иллюзии", "Заклинания школы иллюзии уровня новичка расходуют вдвое меньше магии.", new uint[] { 0x000153D0, 0x000C44C3, 0x000581E2 }, new perkUpgrade[] { new perkUpgrade(0, delegate (object it) { (it as IllusionTree).Novice = true; Debug.Log("spell novice illusion learned");/**/ }) }), //delegate (perkUpgrade p) { (parent as IllusionTree).Novice = true;/**/ }, 0x000F2CA9
+        new pperk("Новичок школы иллюзии", "Заклинания школы иллюзии уровня новичка расходуют вдвое меньше магии.", new uint[] { 0x000153D0, 0x000C44C3, 0x000581E2 },  new perkUpgrade(0, delegate (object it) { (it as IllusionTree).Novice = true; Debug.Log("spell novice illusion learned");/**/})), 
+        //delegate (perkUpgrade p) { (parent as IllusionTree).Novice = true;/**/ }, 0x000F2CA9
         //new pperk(0x000F2CA9, "Двойная иллюзия", "При сотворении заклинания школы иллюзий с двух рук получается его более сильный вариант.", null, new perkUpgrade[] { new perkUpgrade(20, delegate () { (parent as IllusionTree).Novice = true;/**/ }) })
     });
 
