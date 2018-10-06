@@ -30,13 +30,8 @@ public class Player : MonoBehaviour {
     public UpgradeTree LightArmorVisual; public UpgradeTree SneakVisual; public UpgradeTree LockpickingVisual; public UpgradeTree PickpocketVisual; public UpgradeTree SpeechcraftVisual; public UpgradeTree AlchemyVisual;
 
     public SkillTree ActiveSkillTree;
+    public PerkUpgradeMenu perkUpgradeMenu;
 
-    public Text TreeUpgradeTextName;
-    public Text SpellDescriptionTreeUpgradeText;
-    public Text PerkPointsText;
-    public Text RightTreeInfo;
-    public Text LeftTreeInfo;
-    public Text MessageTreeUpgradeText;
 
     private void Awake()
     {
@@ -49,10 +44,16 @@ public class Player : MonoBehaviour {
         {
             IllusionTree.SetVisualScript(0, GetVisual(IllusionTree.SkillType));
         }*/
-        FreePerkPoints = 20;
-        ActiveSkillTree = IllusionTree;
-        UpgradeSkillPointsText();
-        UpgradePerkPointsText();
+        if (isPlayer)
+        {
+            perkUpgradeMenu = GetComponentInChildren<PerkUpgradeMenu>();
+            perkUpgradeMenu.gamer = this;
+            FreePerkPoints = 20;
+            ActiveSkillTree = IllusionTree;
+            perkUpgradeMenu.SetSkillTreeName(ActiveSkillTree);
+            perkUpgradeMenu.ShowSkillTreeValue(IllusionTree);
+            perkUpgradeMenu.UpgradeFreePointsText();
+        }
     }
 	
 	public void TryLernPerk (Perk p) {
@@ -60,33 +61,6 @@ public class Player : MonoBehaviour {
         //UpgradeTree ActiveTree = p.parent;
 
     }
-    
-    public void ShowMessage(string message)
-    {
-        MessageTreeUpgradeText.text = message;
-    }
-
-    public void UpgradeSkillPointsText()
-    {
-        RightTreeInfo.text = ActiveSkillTree.name + " : " + GetSkillValue(ActiveSkillTree.SkillType);
-    }
-
-    public void UpgradePerkPointsText ()
-    {
-        PerkPointsText.text = "Свободных очков способностей: " + FreePerkPoints;
-    }
-
-    public void UpgradeDescriptionText(Perk p)
-    {
-        SpellDescriptionTreeUpgradeText.text = p.Description;
-    }
-
-    public void UpgradeDescriptionText(GroupPerkClass p)
-    {
-        Debug.Log(p);
-        SpellDescriptionTreeUpgradeText.text = (UpgradeTree.GetObject(p.ids[p.UpgradeLevel]).Object as Perk).Description;
-    }
-
 
     public SkillTree GetTree(SkillType sT)
     {

@@ -28,27 +28,54 @@ public class GroupPerkClass
 
     public VisualPerk _VisualPerk = null;
 
-    public GroupPerkClass (uint[] _ids, uint[] _nextids, SkillTree _parent)
+    public GroupPerkClass (uint[] _ids, uint[] _nextids, bool _CanBeLearned, SkillTree _parent)
     {
         //Array.ForEach(_ids, x => (UpgradeTree.GetObject(x).Object as Perk).parent = this);
         ids = _ids;
         nextids = _nextids;
+        CanBeLearned = _CanBeLearned;
         parent = _parent;
 
     }
 
-    public void TryLearn(bool console)
+    public void TryLearn()
     {
         if (!CanBeLearned)
         {
-            parent.parent.ShowMessage("Необходимо выучить предыдущие навыки.");
+            parent.parent.perkUpgradeMenu.ShowMessage("Необходимо выучить предыдущие навыки.");
         } else
         {
-
+            UpgradeTree.GetPerk(ids[UpgradeLevel]).TryLearn(false);
         }
     }
-        /*else */
+
+
+    public void TryLearn(bool console, PerkUpgradeMenu _PerkUpgradeMenu)
+    {
+        Perk p = UpgradeTree.GetPerk(ids[UpgradeLevel]);
+        if (console)
+        {
+            p.LearnEnd();
+        }
+        if (!CanBeLearned)
+        {
+            parent.parent.perkUpgradeMenu.ShowMessage("Необходимо выучить предыдущие навыки.");
+        } else if (learned)
+        {
+            _PerkUpgradeMenu.ShowMessage("Навык уже выучен.");
+        }
+        else if (_PerkUpgradeMenu.GetSkillValue(skillType) < NeededLevelToLearn)
+        {
+            _PerkUpgradeMenu.ShowMessage("У вас недостаточный уровень навыка " + SkillTreeObject.name + "."); //ActiveSkillTree
+        }
+        else
+        {
+            p.LearnEnd();
+        }
+        SkillTreeObject.RefreshVariables();
     }
+    /*else */
+}
 
 [Serializable]
 public class Perk
@@ -69,31 +96,11 @@ public class Perk
         action = _action;
     }
 
-    /*public void TryLearn(bool console)
-    {
-        if (console)
-        {
-            LearnEnd();
-        } else
-        if (learned)
-        {
-            SkillTreeObject.parent.ShowMessage("Навык уже выучен.");
-        }
-        else if (SkillTreeObject.parent.GetSkillValue(SkillTreeObject.SkillType) < NeededLevelToLearn)
-        {
-            SkillTreeObject.parent.ShowMessage("У вас недостаточный уровень навыка " + SkillTreeObject.name + "."); //ActiveSkillTree
-        } else 
-        {
-            LearnEnd();
-        }
-    }*/
-
-    /*public void LearnEnd ()
+    public void LearnEnd ()
     {
         learned = true;
-        SkillTreeObject.RefreshVariables();
         //typeof(SkillTreeType) p = (SkillTreeObject as SkillTreeType);
-    }*/
+    }
 }
 
 public class SkillTree
@@ -140,7 +147,7 @@ public class IllusionTree : SkillTree
     {
         name = "Иллюзия";
         SkillType = SkillType.Illusion;
-        GroupPerks = new GroupPerkClass[] { new GroupPerkClass(new uint[] { 0x000F2CA9 }, new uint[]{ 0x000581e1, 0x000c44c3, 0x00059b77, 0x000153d0 }, this)};
+        GroupPerks = new GroupPerkClass[] { new GroupPerkClass(new uint[] { 0x000F2CA9 }, new uint[] { 0x000581e1, 0x000c44c3, 0x00059b77, 0x000153d0 }, true, this) };
         parent = admin;
     }
 
@@ -195,6 +202,11 @@ public class UpgradeTree : MonoBehaviour {
     public static ListObj GetObject (uint value)
     {
         return Array.Find(AllObject, x => x.id == value);
+    }
+
+    public static Perk GetPerk(uint value)
+    {
+        return Array.Find(AllObject, x => x.id == value).Object as Perk;
     }
 
     /*public IllusionTree Illusion = new IllusionTree("Иллюзия", (skillType)0, new pperk[] {

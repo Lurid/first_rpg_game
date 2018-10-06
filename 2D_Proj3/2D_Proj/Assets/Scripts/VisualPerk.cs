@@ -25,7 +25,7 @@ public class VisualPerk : MonoBehaviour {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         if (code != 0)
         {
-            Debug.Log((UpgradeTree.GetObject(code).Object as Perk).name);
+            Debug.Log((UpgradeTree.GetPerk(code)).name);
             Debug.Log(player.GetTree((UpgradeTree.GetObject(code).Object as Perk).skillType)); //.GroupPerks[0].ids[0]
             ThisPerk = Array.Find(player.GetTree((UpgradeTree.GetObject(code).Object as Perk).skillType).GroupPerks, x => { uint k = Array.Find(x.ids, y => y == code); if (k != 0) Debug.Log("!@!"); return k != 0; } );
         }
@@ -46,10 +46,11 @@ public class VisualPerk : MonoBehaviour {
     {
         if ((Time.time - LastClickTime) < 0.5f)
         {
-            if (code != 0) ThisPerk.TryLearn(false);
+            if (code != 0) ThisPerk.TryLearn();
         } else
         {
-            player.UpgradeDescriptionText(ThisPerk);
+            player.perkUpgradeMenu.UpgradeDescriptionText(ThisPerk);
+            player.perkUpgradeMenu.ShowNeededLevelValue(ThisPerk);
         }
         LastClickTime = Time.time;
     }
