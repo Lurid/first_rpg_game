@@ -18,39 +18,76 @@ public class ListObj
     }
 }
 
+[Serializable]
+public class Perk
+{
+    public string name;
+    public string Description;
+    public byte NeededLevelToLearn;
+    public SkillType skillType;
+    public Action<object> action;
+
+    public Perk(string _name, string _Description, byte _NeededLevelToLearn, SkillType _skillType, Action<object> _action)
+    {
+        name = _name;
+        Description = _Description;
+        NeededLevelToLearn = _NeededLevelToLearn;
+        skillType = _skillType;
+        action = _action;
+    }
+
+    public void LearnEnd(Player player, uint GroupId)
+    {
+        player.GetTree(skillType).GroupPerks[GroupId].learned = true;
+        player.GetTree(skillType).PerkLearnedAction(action);
+        //typeof(SkillTreeType) p = (SkillTreeObject as SkillTreeType);
+    }
+}
+
 public class GroupPerkClass
 {
+    public byte Number;
     public byte UpgradeLevel = 0;
     public bool CanBeLearned = false;
     public uint[] ids;
-    public uint[] nextids;
+    public byte[] nextids;
+    public bool learned = false;
     public SkillTree parent;
+
+    public Perk FocusedPerk;
 
     public VisualPerk _VisualPerk = null;
 
-    public GroupPerkClass (uint[] _ids, uint[] _nextids, bool _CanBeLearned, SkillTree _parent)
+    public GroupPerkClass (byte _Number, uint[] _ids, byte[] _nextids, bool _CanBeLearned, SkillTree _parent)
     {
         //Array.ForEach(_ids, x => (UpgradeTree.GetObject(x).Object as Perk).parent = this);
+        Number = _Number;
         ids = _ids;
         nextids = _nextids;
         CanBeLearned = _CanBeLearned;
         parent = _parent;
-
+        FocusedPerk = UpgradeTree.GetPerk(ids[UpgradeLevel]);
     }
 
-    public void TryLearn()
+    public bool TryLearn()
     {
         if (!CanBeLearned)
         {
-            parent.parent.perkUpgradeMenu.ShowMessage("Необходимо выучить предыдущие навыки.");
+            parent.character.perkUpgradeMenu.ShowMessage("Необходимо выучить предыдущие навыки.");
+            return false;
         } else
         {
-            UpgradeTree.GetPerk(ids[UpgradeLevel]).TryLearn(false);
+            UpgradeTree.GetPerk(ids[UpgradeLevel]).LearnEnd(parent.character, Number);
+            UpgradeLevel++;
+            if (nextids.Length > 0)
+            if (UpgradeLevel == 1)
+                Array.ForEach(nextids, x => { if (x < parent.GroupPerks.Length) if (parent.GroupPerks[x] != null) parent.GroupPerks[x].CanBeLearned = true; }); //UpgradeTree.GetPerk(x).Cas
+            return true;
         }
     }
 
 
-    public void TryLearn(bool console, PerkUpgradeMenu _PerkUpgradeMenu)
+    /*public void TryLearn(bool console, PerkUpgradeMenu _PerkUpgradeMenu)
     {
         Perk p = UpgradeTree.GetPerk(ids[UpgradeLevel]);
         if (console)
@@ -73,42 +110,17 @@ public class GroupPerkClass
             p.LearnEnd();
         }
         SkillTreeObject.RefreshVariables();
-    }
+    }*/
     /*else */
 }
 
-[Serializable]
-public class Perk
-{
-    public string name;
-    public string Description;
-    public bool learned = false;
-    public byte NeededLevelToLearn;
-    public SkillType skillType;
-    public Action<object> action;
-
-    public Perk(string _name, string _Description, byte _NeededLevelToLearn, SkillType _skillType, Action<object> _action)
-    {
-        name = _name;
-        Description = _Description;
-        NeededLevelToLearn = _NeededLevelToLearn;
-        skillType = _skillType;
-        action = _action;
-    }
-
-    public void LearnEnd ()
-    {
-        learned = true;
-        //typeof(SkillTreeType) p = (SkillTreeObject as SkillTreeType);
-    }
-}
 
 public class SkillTree
 {
     public string name;
     public SkillType SkillType;
     public GroupPerkClass[] GroupPerks;
-    public Player parent;
+    public Player character;
 
     public SkillTree() { }
 
@@ -119,9 +131,9 @@ public class SkillTree
         GroupPerks = _GroupPerks;
     }
 
-    public void RefreshVariables()
+    public void PerkLearnedAction(Action<object> action)
     {
-
+        action(this);
     }
 }
 
@@ -143,12 +155,27 @@ public class IllusionTree : SkillTree
 
     public VisualPerk[] perks;
 
-    public IllusionTree(Player admin)
+    public IllusionTree(Player _character)
     {
         name = "Иллюзия";
         SkillType = SkillType.Illusion;
-        GroupPerks = new GroupPerkClass[] { new GroupPerkClass(new uint[] { 0x000F2CA9 }, new uint[] { 0x000581e1, 0x000c44c3, 0x00059b77, 0x000153d0 }, true, this) };
-        parent = admin;
+        GroupPerks = new GroupPerkClass[] {
+            new GroupPerkClass(0, new uint[] { 0x000f2ca9 }, new byte[] { 1, 5, 6, 9 }, true, this),
+            new GroupPerkClass(1, new uint[] { 0x000c44c3 }, new byte[] { 2 }, true, this),
+            new GroupPerkClass(2, new uint[] { 0x000c44c4 }, new byte[] { 3 }, true, this),
+            new GroupPerkClass(3, new uint[] { 0x000c44c5 }, new byte[] { 4 }, true, this),
+            new GroupPerkClass(4, new uint[] { 0x000c44c6 }, null, true, this),
+            new GroupPerkClass(5, new uint[] { 0x000153d0 }, null, true, this),
+            new GroupPerkClass(6, new uint[] { 0x000581e1 }, new byte[] { 7 }, true, this),
+            new GroupPerkClass(7, new uint[] { 0x000581e2 }, new byte[] { 8 }, true, this),
+            new GroupPerkClass(8, new uint[] { 0x000581fd }, new byte[] { 12 }, true, this),
+            new GroupPerkClass(9, new uint[] { 0x00059b77 }, new byte[] { 10 }, true, this),
+            new GroupPerkClass(10, new uint[] { 0x00059b78 }, new byte[] { 11 }, true, this),
+            new GroupPerkClass(11, new uint[] { 0x000c44b5 }, new byte[] { 12 }, true, this),
+            new GroupPerkClass(12, new uint[] { 0x00059b76 }, null, true, this),
+
+        };
+        character = _character;
     }
 
     public void SetVisualScript (byte index, VisualPerk vp)
@@ -196,7 +223,19 @@ public class UpgradeTree : MonoBehaviour {
     public Player player;
 
     public static ListObj[] AllObject = new ListObj[] {
-        new ListObj(0x000F2CA9, typeof(Perk), new Perk("Новичок школы иллюзии", "Заклинания школы иллюзии уровня новичка расходуют вдвое меньше магии.", 0, SkillType.Illusion, delegate (object it) { (it as IllusionTree).Novice = true; Debug.Log("spell novice illusion learned");}))
+        /*0 994473*/new ListObj(0x000f2ca9, typeof(Perk), new Perk("Новичок школы иллюзии", "Заклинания школы иллюзии уровня новичка расходуют вдвое меньше магии.", 0, SkillType.Illusion, delegate (object it) { (it as IllusionTree).Novice = true; Debug.Log("spell novice illusion learned");})),
+        /*1 804035*/new ListObj(0x000c44c3, typeof(Perk), new Perk("Ученик школы иллюзии", "Заклинания школы иллюзии уровня ученика расходуют вдвое меньше магии.", 25, SkillType.Illusion, delegate (object it) { (it as IllusionTree).Novice = true; Debug.Log("spell novice illusion learned");})),
+        /*2 804036*/new ListObj(0x000c44c4, typeof(Perk), new Perk("Адепт школы иллюзии", "Заклинания школы иллюзии уровня адепта расходуют вдвое меньше магии.", 50, SkillType.Illusion, delegate (object it) { (it as IllusionTree).Novice = true; Debug.Log("spell novice illusion learned");})),
+        /*3 804037*/new ListObj(0x000c44c5, typeof(Perk), new Perk("Эксперт  школы иллюзии", "Заклинания школы иллюзии уровня эксперта расходуют вдвое меньше магии.", 75, SkillType.Illusion, delegate (object it) { (it as IllusionTree).Novice = true; Debug.Log("spell novice illusion learned");})),
+        /*4 804038*/new ListObj(0x000c44c6, typeof(Perk), new Perk("Мастер  школы иллюзии", "Заклинания школы иллюзии уровня мастера расходуют вдвое меньше магии.", 100, SkillType.Illusion, delegate (object it) { (it as IllusionTree).Novice = true; Debug.Log("spell novice illusion learned");})),
+        /*5 86992*/new ListObj(0x000153d0, typeof(Perk), new Perk("Двойная иллюзия", "При сотворении заклинания школы иллюзий с двух рук получается его более сильный вариант.", 20, SkillType.Illusion, delegate (object it) { (it as IllusionTree).Novice = true; Debug.Log("spell novice illusion learned");})),
+        /*6 360929*/new ListObj(0x000581e1, typeof(Perk), new Perk("Обман животных", "Все заклинания иллюзии действуют на животных более высокого уровня.", 20, SkillType.Illusion, delegate (object it) { (it as IllusionTree).Novice = true; Debug.Log("spell novice illusion learned");})),
+        /*7 360930*/new ListObj(0x000581e2, typeof(Perk), new Perk("Обман людских глаз", "Все заклинания иллюзии действуют на людей более высокого уровня", 40, SkillType.Illusion, delegate (object it) { (it as IllusionTree).Novice = true; Debug.Log("spell novice illusion learned");})),
+        /*8 360957*/new ListObj(0x000581fd, typeof(Perk), new Perk("Бесшумные заклинания", "Вы творите любые заклинания любой школы магии бесшумно для других.", 50, SkillType.Illusion, delegate (object it) { (it as IllusionTree).Novice = true; Debug.Log("spell novice illusion learned");})),
+        /*9 367479*/new ListObj(0x00059b77, typeof(Perk), new Perk("Гипнотический взгляд", "Заклинания успокоения применимы к противникам более высокого уровня. Сочетается с «Обманом людских глаз» и «Обманом животных».", 30, SkillType.Illusion, delegate (object it) { (it as IllusionTree).Novice = true; Debug.Log("spell novice illusion learned");})),
+        /*10 367480*/new ListObj(0x00059b78, typeof(Perk), new Perk("Наука страха", "Заклинания страха применимы к противникам более высокого уровня. Сочетается с «Обманом людских глаз» и «Обманом животных».", 50, SkillType.Illusion, delegate (object it) { (it as IllusionTree).Novice = true; Debug.Log("spell novice illusion learned");})),
+        /*11 804021*/new ListObj(0x000c44b5, typeof(Perk), new Perk("Неистовство", "Заклинания бешенства применимы к противникам более высокого уровня. Сочетается с «Обманом людских глаз» и «Обманом животных».", 70, SkillType.Illusion, delegate (object it) { (it as IllusionTree).Novice = true; Debug.Log("spell novice illusion learned");})),
+        /*12 367478*/new ListObj(0x00059b76, typeof(Perk), new Perk("Мастер разума", "Заклинания школы иллюзии действуют на нежить, даэдра и механизмы.", 90, SkillType.Illusion, delegate (object it) { (it as IllusionTree).Novice = true; Debug.Log("spell novice illusion learned");})),
     };
 
     public static ListObj GetObject (uint value)
@@ -207,6 +246,33 @@ public class UpgradeTree : MonoBehaviour {
     public static Perk GetPerk(uint value)
     {
         return Array.Find(AllObject, x => x.id == value).Object as Perk;
+    }
+
+    public static Type GetTreeType(SkillType st)
+    {
+        Type result = null;
+        switch (st)
+        {
+            case SkillType.Illusion: result = typeof(IllusionTree); break;
+            case SkillType.Conjuration: result = typeof(SkillTree); break;
+            case SkillType.Destruction: result = typeof(SkillTree); break;
+            case SkillType.Restoration: result = typeof(SkillTree); break;
+            case SkillType.Alteration: result = typeof(SkillTree); break;
+            case SkillType.Enchanting: result = typeof(SkillTree); break;
+            case SkillType.Smithing: result = typeof(SkillTree); break;
+            case SkillType.HeavyArmor: result = typeof(SkillTree); break;
+            case SkillType.Block: result = typeof(SkillTree); break;
+            case SkillType.Twohanded: result = typeof(SkillTree); break;
+            case SkillType.Onehanded: result = typeof(SkillTree); break;
+            case SkillType.Marksman: result = typeof(SkillTree); break;
+            case SkillType.LightArmor: result = typeof(SkillTree); break;
+            case SkillType.Sneak: result = typeof(SkillTree); break;
+            case SkillType.Lockpicking: result = typeof(SkillTree); break;
+            case SkillType.Pickpocket: result = typeof(SkillTree); break;
+            case SkillType.Speechcraft: result = typeof(SkillTree); break;
+            case SkillType.Alchemy: result = typeof(SkillTree); break;
+        }
+        return result;
     }
 
     /*public IllusionTree Illusion = new IllusionTree("Иллюзия", (skillType)0, new pperk[] {

@@ -5,29 +5,33 @@ using UnityEngine.UI;
 using System;
 
 public class VisualPerk : MonoBehaviour {
-    public uint code;
+    public uint FirstPerkId;
 
     private GroupPerkClass ThisPerk;
 
     public Text lvl;
-    public Text namee;
+    public Text PerkName;
     public Image learnedIMG;
     public Player player;
 
     private float LastClickTime;
 
     void Start () {
-        /*if (ThisPerk != null) {
-            lvl.text = (ThisPerk.perkUpgradeLevel.NeededLevel) + "lvl";
-            name.text = ThisPerk.name;
-            tree = transform.GetComponentInParent<UpgradeTree>();
-        }*/
+
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        if (code != 0)
+        if (FirstPerkId != 0)
         {
-            Debug.Log((UpgradeTree.GetPerk(code)).name);
-            Debug.Log(player.GetTree((UpgradeTree.GetObject(code).Object as Perk).skillType)); //.GroupPerks[0].ids[0]
-            ThisPerk = Array.Find(player.GetTree((UpgradeTree.GetObject(code).Object as Perk).skillType).GroupPerks, x => { uint k = Array.Find(x.ids, y => y == code); if (k != 0) Debug.Log("!@!"); return k != 0; } );
+            //Debug.Log((UpgradeTree.GetPerk(FirstPerkId)).name);
+            //Debug.Log(player.GetTree((UpgradeTree.GetPerk(FirstPerkId).skillType))); //.GroupPerks[0].ids[0]
+            ThisPerk = Array.Find(player.GetTree((UpgradeTree.GetObject(FirstPerkId).Object as Perk).skillType).GroupPerks, x => x.ids[0] == FirstPerkId);
+            if (ThisPerk != null)
+            {
+                lvl.text = (ThisPerk.FocusedPerk.NeededLevelToLearn) + "lvl";
+                PerkName.text = ThisPerk.FocusedPerk.name;
+                //tree = transform.GetComponentInParent<UpgradeTree>();
+            }
+            //Debug.Log(ThisPerk);
+            //ThisPerk = Array.Find(player.GetTree((UpgradeTree.GetObject(FirstPerkId).Object as Perk).skillType).GroupPerks, x => { uint k = Array.Find(x.ids, y => y == FirstPerkId); if (k != 0) Debug.Log("!@!"); return k != 0; });
         }
         //ThisPerk = 
     }
@@ -44,13 +48,21 @@ public class VisualPerk : MonoBehaviour {
 
     public void Click()
     {
-        if ((Time.time - LastClickTime) < 0.5f)
+        if (FirstPerkId != 0)
         {
-            if (code != 0) ThisPerk.TryLearn();
-        } else
-        {
-            player.perkUpgradeMenu.UpgradeDescriptionText(ThisPerk);
-            player.perkUpgradeMenu.ShowNeededLevelValue(ThisPerk);
+            if ((Time.time - LastClickTime) < 0.5f)
+            {
+                if (FirstPerkId != 0)
+                {
+                    bool leared = ThisPerk.TryLearn();
+                    if (leared) LearnThisPerk();
+                }
+            }
+            else
+            {
+                player.perkUpgradeMenu.UpgradeDescriptionText(ThisPerk);
+                player.perkUpgradeMenu.ShowNeededLevelValue(ThisPerk);
+            }
         }
         LastClickTime = Time.time;
     }
