@@ -10,6 +10,14 @@ public class InvSize : MonoBehaviour {
     public RectTransform[] BlockRows;
     public GridLayoutGroup glg;
 
+    private void Start()
+    {
+        for(uint i = 0; i < glg.transform.childCount; i++)
+        {
+            glg.transform.GetChild((int)i).GetComponent<ItemVisualCell>().number = i;
+        }
+    }
+
     void Update () {
         CompSize = glg.transform.GetComponent<RectTransform>().rect.size;
         bool WoH = (CompSize.x / InveSize.x) < (CompSize.y / InveSize.y);

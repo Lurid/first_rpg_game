@@ -44,7 +44,8 @@ public class Player : MonoBehaviour {
         {
             IllusionTree.SetVisualScript(0, GetVisual(IllusionTree.SkillType));
         }*/
-        if (isPlayer)
+
+        /*if (isPlayer)
         {
             perkUpgradeMenu = GetComponentInChildren<PerkUpgradeMenu>();
             perkUpgradeMenu.gamer = this;
@@ -53,7 +54,7 @@ public class Player : MonoBehaviour {
             perkUpgradeMenu.SetSkillTreeName(ActiveSkillTree);
             perkUpgradeMenu.ShowSkillTreeValue(IllusionTree);
             perkUpgradeMenu.UpgradeFreePointsText();
-        }
+        }*/
     }
 	
 	public void TryLernPerk (Perk p) {

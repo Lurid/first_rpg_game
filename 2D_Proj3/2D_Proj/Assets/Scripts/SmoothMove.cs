@@ -32,7 +32,7 @@ public class SmoothMove : MonoBehaviour {
         if (Show)
         {
             float f = (Time.time - LastActionTime) / MoveTimeInSeconds;
-            Set((((UoDvector) ? 1 : 0) - f) * ((UoDvector) ? 1 : -1)); //* ((UoDvector) ? -1 : 1)
+            Set((((UoDvector) ? 1 - f : f))); //* ((UoDvector) ? -1 : 1) // - f) * ((UoDvector) ? 1 : -1
         }
 
         if ((Show == true) && (Time.time > (LastActionTime + MoveTimeInSeconds)))
